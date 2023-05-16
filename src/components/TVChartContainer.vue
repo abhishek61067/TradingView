@@ -65,11 +65,81 @@ export default {
       symbol: this.getDefaultSymbol(),
       // BEWARE: no trailing slash is expected in feed URL
       datafeed: tvDatafeed,
+
+      custom_formatters: {
+timeFormatter: {
+    format: (date) => {
+        const _format_str = '%h:%m';
+        return _format_str
+            .replace('%h', date.getUTCHours(), 2)
+            .replace('%m', date.getUTCMinutes(), 2)
+            .replace('%s', date.getUTCSeconds(), 2);
+    }
+},
+dateFormatter: {
+    format: (date) => {
+        return date.getUTCFullYear() + '/' + (date.getUTCMonth() + 1) + '/' + date.getUTCDate();
+    }
+},
+tickMarkFormatter: (date, tickMarkType) => {
+    switch (tickMarkType) {
+        case 'Year':
+            return 'Y' + date.getUTCFullYear();
+
+        case 'Month':
+            return 'M' + (date.getUTCMonth() + 1);
+
+        case 'DayOfMonth':
+            return 'D' + date.getUTCDate();
+
+        case 'Time':
+            return 'T' + date.getUTCHours() + ':' + date.getUTCMinutes();
+
+        case 'TimeWithSeconds':
+            return 'S' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds();
+    }
+
+    throw new Error('unhandled tick mark type ' + tickMarkType);
+},
+priceFormatterFactory: (symbolInfo, minTick) => {
+    if (symbolInfo?.fractional || minTick !== 'default' && minTick.split(',')[2] === 'true') {
+        return {
+            format: (price, signPositive) => {
+                // return the appropriate format
+            },
+        };
+    }
+    return null; // this is to use default formatter;
+},
+studyFormatterFactory: (format, symbolInfo) => {
+    if (format.type === 'price') {
+        const numberFormat = new Intl.NumberFormat('en-US', { notation: 'scientific' });
+        return {
+            format: (value) => numberFormat.format(value)
+        };
+    }
+
+    if (format.type === 'volume') {
+        return {
+            format: (value) => (value / 1e9).toPrecision(format?.precision || 2) + 'B'
+        };
+    }
+
+    if (format.type === 'percent') {
+        return {
+            format: (value) => `${value.toPrecision(format?.precision || 4)} percent`
+        };
+    }
+
+    return null; // this is to use default formatter;
+},
+},
       interval: '1W',
       container: container,
       library_path: process.env.VUE_APP_CHARTING_LIBRARY_PATH,
       timeframe: '1d',
       timezone: 'exchange',
+      
       locale: getLanguageFromURL() || 'en',
       // disabled_features: [''],
       enabled_features: ['study_templates', 'chart_crosshair_menu', 'use_localstorage_for_settings'],
@@ -92,7 +162,7 @@ export default {
     // Create a toolbar button
     const button = $('<button>')
       .addClass('my-dropdown-button')
-      
+
       .text('Dropdown')
       .appendTo('.tv-top-toolbar');
 
