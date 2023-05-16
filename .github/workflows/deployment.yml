@@ -1,0 +1,34 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  VUE_APP_SOCKET_SERVER: "wss://demo.ideapreneurnepal.com"
+  VUE_APP_SOCKET_SERVER_PATH: "/vriddhi/ws/"
+  VUE_APP_CHARTING_LIBRARY_PATH: "/vriddhi/charting_library/"
+  VUE_APP_CHART_FEED_URL: "https://demo.ideapreneurnepal.com/vriddhi/chart/api/v1"
+  VUE_APP_CHART_STORAGE_URL: "https://demo.ideapreneurnepal.com/vriddhi/chart/api/v1"
+  VUE_APP_CHART_CLIENT_ID: "ideapreneurnepal.com"
+  PUBLIC_PATH: "/v/ticker/"
+  
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.X
+        cache: 'npm'
+    - run: npm install
+    - run: npm run build

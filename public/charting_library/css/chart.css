@@ -1,0 +1,28 @@
+.adjusted {
+    color: #267a34;
+}
+
+.unadjusted {
+    color: blue;
+}
+
+.custom-btn {
+    font-weight: 600;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.my-dropdown-button {
+    /* Button styles */
+    background-color: red;
+  }
+  
+  .my-dropdown-menu {
+    /* Dropdown menu styles */
+    background-color: green;
+  }
+  
+  .custom-dropdown .item {
+    color: red; /* Change the text color to red */
+  }
+  

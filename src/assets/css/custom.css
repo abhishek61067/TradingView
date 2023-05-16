@@ -1,0 +1,93 @@
+
+:root {
+  --brand-primary-font: "Inter", sans-serif !important;
+  --brand-secondary-font: "Nunito", sans-serif !important;
+}
+
+.bg-brand {
+  background-color: #267a34!important;
+}
+.bg-light-brand {
+  background: #35b14f!important;
+}
+.text-black {
+  color: black!important;
+}
+.text-brand {
+  color: #267a34!important;
+}
+.text-light-brand {
+  color: #35b14f!important;
+}
+/* 
+.paper-trading table th {
+  background: #35b14f!important;
+  color: #ffffff!important;
+} */
+
+.v-step {
+  background: #d5efda!important;
+  color: black!important;
+}
+
+.v-step__header {
+  background-color: #066615!important;
+  color: #ffffff!important;
+}
+
+.v-step__button {
+  border: 0.08rem solid #0e7d20!important;
+  color: #10641d!important;
+  font-size: .9rem!important;
+}
+
+.v-step__arrow--dark:before {
+  background: #076616!important;
+}
+
+.bg-light-gray {
+  background-color: #e1e1e1 !important;
+  color: #707070!important;
+}
+.text-light-gray {
+  color: #707070!important;
+}
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.nav-tabs-vertical .nav-link.active{
+  color: #267a34!important;
+}
+
+.nav-tabs-vertical .nav-link.active:before{
+  background-color: #267a34!important;
+}
+.nav-tabs-vertical .nav-link.active svg path{
+  fill: #267a34!important;
+}
+
+.font-inter {
+  font-family: var(--brand-primary-font)!important;
+}
+
+.font-nunito {
+  font-family: var(--brand-secondary-font)!important;
+}
+
+
+.splide__arrow svg {
+  fill: #277a34!important;
+}
+.splide__arrow:disabled {
+  display: none!important;
+}
+
+.splide__arrow {
+  background: #e1e1e1!important;
+  opacity: 1!important;
+}
+
+.blur-5 {
+  filter: blur(5px);
+}
