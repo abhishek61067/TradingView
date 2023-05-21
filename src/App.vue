@@ -14,6 +14,7 @@
 </template>
 
 <script>
+// import "./pinejs/support-and-resistance.pine"
 // Added comment
 export default {
   data: function () {
