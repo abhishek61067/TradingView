@@ -9,11 +9,16 @@ import { useMarketdepthStore } from '@/stores/marketdepthStore'
 import { useCompanyEssentialStore } from '@/stores/companyEssentialStore'
 import { useCalendarStore } from '@/stores/calendarStore'
 import { useAccountStore } from '@/stores/accountStore'
-
 import { widget } from '../../public/charting_library';
 
 
+import {reactive} from "vue";
 
+export const drawChartStore = reactive({
+drawChart: function(){
+    alert("state mgmt test");
+  }
+})
 
 // import { SOCKET_EVENTS } from '@/stores/enums'
 // import { mdiConsoleNetwork } from '@mdi/js';
@@ -28,6 +33,8 @@ function getLanguageFromURL() {
 
 export default {
   name: 'TVChartContainer',
+  // abhi: "abhishek bhattarai",
+
   setup() {
     const tickerStore = useTickerStore()
     const positionStore = usePositionStore()
@@ -36,7 +43,7 @@ export default {
     const essentialStore = useCompanyEssentialStore()
     const calendarStore = useCalendarStore()
     const accountStore = useAccountStore()
-
+   
     return {
       tickerStore,
       positionStore,
@@ -44,12 +51,13 @@ export default {
       depthStore,
       essentialStore,
       calendarStore,
-      accountStore
+      accountStore,
+      // drawChartStore,
     }
   },
   data() {
     return {
-      feedUrl: process.env.VUE_APP_CHART_FEED_URL
+      feedUrl: process.env.VUE_APP_CHART_FEED_URL,
     }
   },
   tvWidget: null,
@@ -57,7 +65,7 @@ export default {
     console.log(this.accountStore.account, ' ACCOUNT ')
     const self = this;
     let tvDatafeed = window.tvDatafeed = new window.Datafeeds.UDFCompatibleDatafeed(
-      self.tickerStore.chartDataType.url,  40 * 1000 // update in 1 minutes
+      self.tickerStore.chartDataType.url, 40 * 1000 // update in 1 minutes
     );
 
     const container = this.$refs.chartContainer;
@@ -66,56 +74,50 @@ export default {
       // BEWARE: no trailing slash is expected in feed URL
       datafeed: tvDatafeed,
 
-      
-      interval: '1W',
+
+      interval: '1W', 
       container: container,
       library_path: process.env.VUE_APP_CHARTING_LIBRARY_PATH,
       timeframe: '1d',
       timezone: 'exchange',
-    //   time_frames: [
-    // // { text: "50y", resolution: "6M", description: "50 Years" },
-    // // { text: "3y", resolution: "1W", description: "3 Years", title: "3yr" },
-    // // { text: "8m", resolution: "1D", description: "8 Month" },
-    // // { text: "3d", resolution: "5", description: "3 Days" },
-    // // { text: "1000y", resolution: "1W", description: "All", title: "All" },
-// ]
-
+      //   time_frames: [
+      // // { text: "50y", resolution: "6M", description: "50 Years" },
+      // // { text: "3y", resolution: "1W", description: "3 Years", title: "3yr" },
+      // // { text: "8m", resolution: "1D", description: "8 Month" },
+      // // { text: "3d", resolution: "5", description: "3 Days" },
+      // // { text: "1000y", resolution: "1W", description: "All", title: "All" },
+      // ]
       locale: getLanguageFromURL() || 'en',
       // disabled_features: [''],
       enabled_features: ['study_templates', 'chart_crosshair_menu', 'use_localstorage_for_settings'],
+      // disabled_features: ['header_saveload'],
       charts_storage_url: process.env.VUE_APP_CHART_STORAGE_URL,
       charts_storage_api_version: '1.1',
       client_id: process.env.VUE_APP_CHART_CLIENT_ID,
+      // save_chart_properties_to_local_storage: true,
       user_id: this.accountStore.account.user_id || 'public_user_id',
       fullscreen: false,
       autosize: true,
-      theme: "Dark",      
+      theme: "Dark",
       custom_css_url: 'css/chart.css',
       // studies_overrides: {},
       chart_crosshair_menu: true,
       toolbar_bg: 'red',
 
 
-      debug: true,
+      debug: false,
       loading_screen: { backgroundColor: "#000000" },
-      loaded: function() {
-    // Create a toolbar button
-    const button = $('<button>')
-      .addClass('my-dropdown-button')
+      loaded: function () {
+        // Create a toolbar button
+        const button = $('<button>')
+          .addClass('my-dropdown-button')
 
-      .text('Dropdown')
-      .appendTo('.tv-top-toolbar');
+          .text('Dropdown')
+          .appendTo('.tv-top-toolbar');
 
-    // Create the dropdown menu
-    const dropdown = $('<div>')
-      .addClass('my-dropdown-menu')
-      .appendTo(button);
+        
+      }
 
-    // Add items to the dropdown menu
-    const item1 = $('<div>').text('Item 1').appendTo(dropdown);
-    const item2 = $('<div>').text('Item 2').appendTo(dropdown);
-    }
-      
       // custom_indicators_getter: function(PineJS) {
       //   return Promise.resolve([
       //     custom_study(PineJS)
@@ -127,27 +129,32 @@ export default {
     this.tvWidget = window.tvWidget = tvWidget;
 
     tvWidget.headerReady().then(function () {
-      
       let button = tvWidget.createButton();
       button.setAttribute('title', 'Show UnAdjusted');
+
+    //   const saveButton = tvWidget.createButton();
+    // saveButton.setAttribute('title', 'Click to Save Chart');
+    // saveButton.classList.add('apply-common-tooltip');
+    // saveButton.addEventListener('click', () => tvWidget.save((saveObject) => this.chartService.saveCurrentChart(saveObject, tvWidget)))
+    // saveButton.innerHTML = 'Save Chart';
 
       let dropdown = tvWidget.createDropdown({
         title: "dropdown",
         items: [{
-          title:"1",
-          onSelect: ()=>{
+          title: "1",
+          onSelect: () => {
             console.log('1 selected');
           }
-        },{
-          title:"2"
+        }, {
+          title: "2"
         }],
         tooltip: "test",
         icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="fill:white" width="10"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>`,
-        align:"left",
+        align: "left",
         cssClass: "custom-dropdown",
       });
       // dropdown.setAttribute("title", "Dropdown")
-      
+
       let isUnadjusted = false
       button.addEventListener('click', function () {
         if (isUnadjusted) {
@@ -166,11 +173,20 @@ export default {
       button.className = `custom-btn ${self.tickerStore.chartDataType.key}`;
     });
 
+    // console.log("chartReady status: ",tvWidget.onChartReady)
+ 
+
     tvWidget.onChartReady(() => {
 
       // console.log(this.tickerStore.history, ' TV Chart Ready')
 
       let activeChart = tvWidget.activeChart()
+
+      console.log("tvWidget: ", tvWidget);
+      console.log('activeChart: ', tvWidget.activeChart);   
+
+      // here we are drawing
+      // this.drawChartMethod();
 
       tvWidget.subscribe('onPlusClick', (data) => {
         // console.log('plus clicked', data)
@@ -253,6 +269,9 @@ export default {
     });
   },
   methods: {
+   
+
+
     changeChartSymbol: function (symbol) {
       // console.log(symbol)
       if (this.tvWidget) {
@@ -367,6 +386,4 @@ export default {
 .TVChartContainer-full {
   height: calc(100vh - 47px);
 }
-
-
 </style>

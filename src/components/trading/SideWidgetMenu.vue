@@ -7,14 +7,44 @@ import {
 import { useTickerStore } from '@/stores/tickerStore'
 import icons from './side-widgets/icons/index'
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
+import TVChartContainer from '../TVChartContainer.vue';
+import { drawChartStore } from '../TVChartContainer.vue';
 // import '@splidejs/vue-splide/css/core';
 import '@splidejs/vue-splide/css';
 
 export default {
   name: 'SideWidgetMenu',
+  i:1,
+
   setup: function () {
     const store = useTickerStore()
     return {
+
+   
+      drawChartStore,
+      
+      drawChartMethod : () => {
+        console.log('drawing the pitchfork----------------------------------------------');
+        console.log('drawing the pitchfork----------------------------------------------');
+        // accessing the variable of another component
+        // console.log("--------------------------------------------", TVChartContainer.abhi, "---------------------------------------------");
+        // State management
+        drawChartStore.drawChart;
+        const from = Date.now() / 1000 - 500 * 24 * 3600; // 500 days ago
+const to = Date.now() / 1000;
+tvWidget.activeChart().createMultipointShape(
+    [{ time: from, price: 150 }, { time: to, price: 150 }],
+    {
+        shape: "trend_line",
+        lock: true,
+        disableSelection: true,
+        disableSave: true,
+        disableUndo: true,
+        text: "text",
+    }
+);
+      },
+      
       store,
       mdiListBoxOutline, mdiAlarm, mdiNewspaper,
       mdiFire, mdiLightbulbVariantOutline
@@ -30,7 +60,9 @@ export default {
       windowHeight: window.innerHeight
     }
   },
+
   methods: {
+   
     onResize() {
       this.windowHeight = window.innerHeight
     },
@@ -53,6 +85,10 @@ export default {
     }
   },
   mounted() {
+
+console.log('side widget mounting.........', this.i, "times");
+i++;
+
     new Tooltip(document.body, {
       selector: "[data-bs-toggle='tooltip']",
       placement: 'left'
@@ -84,7 +120,7 @@ export default {
           <a href="#"  :class="{
             'nav-link p-2':true,
             'active': store.selectedWidget === 'watchTable'
-          }" @click="store.toggleSideTab('watchTable')"
+          }" @click="drawChartMethod"
             ref="watchTableTabRef">
             <WatchListIcon />
           </a>
