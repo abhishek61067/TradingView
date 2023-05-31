@@ -14,7 +14,7 @@ import '@splidejs/vue-splide/css';
 
 export default {
   name: 'SideWidgetMenu',
-  i:1,
+  // i:1,
 
   setup: function () {
     const store = useTickerStore()
@@ -32,17 +32,24 @@ export default {
         drawChartStore.drawChart;
         const from = Date.now() / 1000 - 500 * 24 * 3600; // 500 days ago
 const to = Date.now() / 1000;
-tvWidget.activeChart().createMultipointShape(
-    [{ time: from, price: 150 }, { time: to, price: 150 }],
+try{
+  tvWidget.activeChart().createMultipointShape(
+    [{ time: from, price: 150 }, { time: to, price: 250 }],
     {
-        shape: "trend_line",
-        lock: true,
-        disableSelection: true,
-        disableSave: true,
-        disableUndo: true,
-        text: "text",
+        shape: "rectangle",
+        lock: false,
+        disableSelection: false,
+        disableSave: false,
+        disableUndo: false,
+        text: "text test",
+        // lineHeight: "200px",
     }
 );
+}
+catch(err){
+console.log('err');
+}
+
       },
       
       store,
@@ -86,8 +93,8 @@ tvWidget.activeChart().createMultipointShape(
   },
   mounted() {
 
-console.log('side widget mounting.........', this.i, "times");
-i++;
+// console.log('side widget mounting.........', this.i, "times");
+// i++;
 
     new Tooltip(document.body, {
       selector: "[data-bs-toggle='tooltip']",

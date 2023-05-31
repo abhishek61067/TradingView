@@ -62,7 +62,12 @@ export default {
   },
   tvWidget: null,
   mounted() {
-    console.log(this.accountStore.account, ' ACCOUNT ')
+// console.log('mounting...............................');
+
+
+
+
+    // console.log(this.accountStore.account, ' ACCOUNT ')
     const self = this;
     let tvDatafeed = window.tvDatafeed = new window.Datafeeds.UDFCompatibleDatafeed(
       self.tickerStore.chartDataType.url, 40 * 1000 // update in 1 minutes
@@ -73,8 +78,6 @@ export default {
       symbol: this.getDefaultSymbol(),
       // BEWARE: no trailing slash is expected in feed URL
       datafeed: tvDatafeed,
-
-
       interval: '1W', 
       container: container,
       library_path: process.env.VUE_APP_CHARTING_LIBRARY_PATH,
@@ -94,7 +97,9 @@ export default {
       charts_storage_url: process.env.VUE_APP_CHART_STORAGE_URL,
       charts_storage_api_version: '1.1',
       client_id: process.env.VUE_APP_CHART_CLIENT_ID,
-      
+
+      save_chart_properties_to_local_storage: true,
+
       user_id: this.accountStore.account.user_id || 'public_user_id',
       fullscreen: false,
       autosize: true,
@@ -103,26 +108,26 @@ export default {
       // studies_overrides: {},
       chart_crosshair_menu: true,
       toolbar_bg: 'red',
-
-
       debug: false,
       loading_screen: { backgroundColor: "#000000" },
-      loaded: function () {
-        // Create a toolbar button
-        const button = $('<button>')
-          .addClass('my-dropdown-button')
-
-          .text('Dropdown')
-          .appendTo('.tv-top-toolbar');
-
-        
-      }
-
       // custom_indicators_getter: function(PineJS) {
       //   return Promise.resolve([
       //     custom_study(PineJS)
       //   ]);
       // },
+
+      auto_save_delay: 1,
+//       saved_data: {
+
+// },
+// saved_data_meta_info:{
+
+// },
+// load_last_chart: true,
+
+
+
+
     };
 
     const tvWidget = new widget(widgetOptions);
@@ -179,6 +184,12 @@ export default {
     tvWidget.onChartReady(() => {
 
       // console.log(this.tickerStore.history, ' TV Chart Ready')
+
+      console.log('chart ready....................');
+      setTimeout(function(){
+        console.log("-------------------------------------------", document.querySelector('#header-toolbar-symbol-search'));
+
+      },3000)
 
       let activeChart = tvWidget.activeChart()
 

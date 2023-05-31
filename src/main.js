@@ -91,3 +91,7 @@ app.component('EasyDataTable', Vue3EasyDataTable);
 app.use(Notifications)
 app.use(router)
 app.mount('#app')
+
+// document.querySelector('[data-name = "menu-inner"]').addEventListener("click", function(){
+//   console.log('indicators', "clicked");
+// })
