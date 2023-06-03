@@ -15,9 +15,9 @@ import { widget } from '../../public/charting_library';
 import {reactive} from "vue";
 
 export const drawChartStore = reactive({
-drawChart: function(){
-    alert("state mgmt test");
-  }
+// drawChart: function(){
+//     alert("state mgmt test");
+//   }
 })
 
 // import { SOCKET_EVENTS } from '@/stores/enums'

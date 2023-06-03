@@ -25,23 +25,22 @@ export default {
       
       drawChartMethod : () => {
         console.log('drawing the pitchfork----------------------------------------------');
-        console.log('drawing the pitchfork----------------------------------------------');
         // accessing the variable of another component
         // console.log("--------------------------------------------", TVChartContainer.abhi, "---------------------------------------------");
         // State management
-        drawChartStore.drawChart;
+        // drawChartStore.drawChart;
         const from = Date.now() / 1000 - 500 * 24 * 3600; // 500 days ago
 const to = Date.now() / 1000;
 try{
   tvWidget.activeChart().createMultipointShape(
     [{ time: from, price: 150 }, { time: to, price: 250 }],
     {
-        shape: "rectangle",
+        shape: "trend_line",
         lock: false,
         disableSelection: false,
         disableSave: false,
         disableUndo: false,
-        text: "text test",
+        // text: "text test",
         // lineHeight: "200px",
     }
 );
